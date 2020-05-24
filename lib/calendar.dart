@@ -1,5 +1,5 @@
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -7,50 +7,91 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  CalendarController _controller;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller = CalendarController();
-  }
-//
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    _controller.dispose();
-//    super.dispose();
-//  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Calendar"),
+        body: Container(
+      child: SfCalendar(
+        view: CalendarView.day,
+        todayHighlightColor: Colors.red,
+        dataSource: MeetingDataSource(_getDataSource()),
+        firstDayOfWeek: 1,
+        timeSlotViewSettings: TimeSlotViewSettings(
+            startHour: 0,
+            endHour: 24,
+            nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TableCalendar(
-              initialCalendarFormat: CalendarFormat.week,
-              calendarStyle: CalendarStyle(
-                todayColor: Color(0xFFC6DEF1),
-                selectedColor: Theme.of(context).primaryColor,
-              ),
-              calendarController: _controller,
-              headerStyle: HeaderStyle(
-                formatButtonDecoration: BoxDecoration(
-                  color: Color(0xFFC6DEF1),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                formatButtonShowsNext: false,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    ));
   }
+}
+
+class DataSource extends CalendarDataSource {
+  DataSource(List<Appointment> source) {
+    appointments = source;
+  }
+}
+
+DataSource _getCalendarDataSource() {
+  List<Appointment> appointments = <Appointment>[];
+  appointments.add(Appointment(
+      startTime: DateTime.now(),
+      endTime: DateTime.now().add(Duration(hours: 2)),
+      isAllDay: true,
+      subject: 'Meeting',
+      color: Colors.blue,
+      startTimeZone: '',
+      endTimeZone: ''));
+  return DataSource(appointments);
+}
+
+List<Meeting> _getDataSource() {
+  var meetings = <Meeting>[];
+  final DateTime today = DateTime.now();
+  final DateTime startTime =
+      DateTime(today.year, today.month, today.day, 9, 0, 0);
+  final DateTime endTime = startTime.add(const Duration(hours: 2));
+  meetings.add(Meeting(
+      'Conference', startTime, endTime, const Color(0xFF0F8644), false));
+  return meetings;
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments[index].from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments[index].to;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments[index].eventName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appointments[index].background;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments[index].isAllDay;
+  }
+}
+
+class Meeting {
+  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  bool isAllDay;
 }

@@ -30,7 +30,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   table_calendar: ^2.2.3
-
+  syncfusion_flutter_calendar: ^18.1.53-beta
 
 dev_dependencies:
   flutter_test:

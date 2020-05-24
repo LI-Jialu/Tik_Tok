@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Tik Tok',
       theme: ThemeData(
-        primaryColor: Color(0xFFC6DEF1),
+        primaryColor: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
