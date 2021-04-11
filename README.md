@@ -1,6 +1,17 @@
-# tiktok
+# Daily Timer 
 
-Time tracker 
+A time tracker application in IOS, Android and Web. 
+Just by clicking the "start" and "end" button to start recording your daily activities. 
+Export week results in csv and calendar view every week. 
+
+# Features 
+Record by clicking button (√) 
+Switch to any date (√) 
+Export CSM (√) 
+Home page (√) 
+
+Export calendar view (in a graph maybe) 
+Including pre-set actiivty type 
 
 ## Getting Started
 
